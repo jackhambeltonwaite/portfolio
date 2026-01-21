@@ -1,1 +1,450 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Name — Creative Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+:root {
+  --bg: #030303;
+  --text: #ffffff;
+  --text-muted: #888888;
+  --accent: #5e6aff;
+  --border: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --font-main: 'Manrope', sans-serif;
+  --font-serif: 'JetBrains Mono', serif;
+  --cursor-size: 20px;
+}
+
+/* RESET & BASE */
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+html { scroll-behavior: smooth; }
+body { 
+  background-color: var(--bg); 
+  color: var(--text); 
+  font-family: var(--font-main); 
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- ADVANCED CURSOR --- */
+.cursor {
+  position: fixed; top: 0; left: 0;
+  width: var(--cursor-size); height: var(--cursor-size);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  /* Smooth transition for snapping */
+  transition: 
+    width 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+    height 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+    border-radius 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+    background-color 0.4s,
+    border-color 0.4s;
+  mix-blend-mode: difference;
+}
+.cursor-dot {
+  position: fixed; top: 0; left: 0;
+  width: 6px; height: 6px; background: white;
+  border-radius: 50%; pointer-events: none; z-index: 10000;
+  transform: translate(-50%, -50%);
+}
+
+/* --- BACKGROUND ACCENTS --- */
+.ambient-light {
+  position: fixed; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(94,106,255,0.15), transparent 60%);
+  border-radius: 50%; z-index: -1; pointer-events: none;
+  filter: blur(80px); opacity: 0.6;
+}
+.light-1 { top: -20%; left: -10%; animation: float 10s ease-in-out infinite; }
+.light-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, rgba(255,94,158,0.1), transparent 60%); animation: float 14s ease-in-out infinite reverse; }
+
+@keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(40px, 40px); } }
+
+/* --- NAV --- */
+nav {
+  position: fixed; top: 0; width: 100%; padding: 2rem 4rem;
+  display: flex; justify-content: space-between; align-items: center; z-index: 50;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.05em; mix-blend-mode: exclusion;}
+.nav-items a {
+  margin-left: 1.5rem; text-decoration: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
+  transition: color 0.3s; position: relative;
+  padding: 0.5rem 1rem; border-radius: 8px; /* Added for cursor to grab */
+}
+.nav-items a:hover { color: white; }
+
+/* --- HERO --- */
+.hero {
+  height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  padding: 0 4rem; position: relative;
+}
+.hero h1 {
+  font-size: clamp(3.5rem, 8vw, 7.5rem); line-height: 1.1; letter-spacing: -0.04em;
+  font-weight: 700; max-width: 1200px;
+}
+
+/* Container to help with positioning anywhere */
+.btn-container {
+  display: inline-block;
+  padding: 20px;
+}
+
+.custom-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 2.8rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  text-decoration: none;
+  background: transparent;
+  overflow: hidden;
+  transition: border-color 0.4s ease;
+  z-index: 1;
+}
+
+.btn-text {
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+  z-index: 3;
+  transition: color 0.4s ease;
+}
+
+/* The sliding background effect */
+.btn-fill {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--text); /* Solid white fill */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+/* Hover States */
+.custom-btn:hover {
+  border-color: var(--text);
+}
+
+.custom-btn:hover .btn-fill {
+  transform: translateY(-100%);
+}
+
+.custom-btn:hover .btn-text {
+  color: var(--bg); /* Flips text to black when background becomes white */
+}
+.shimmer-text {
+  background: linear-gradient(90deg, #ffffff 0%, #888888 40%, #ffffff 80%);
+  background-size: 200% auto;
+  color: transparent; -webkit-background-clip: text; background-clip: text;
+  animation: shine 5s linear infinite;
+}
+@keyframes shine { to { background-position: 200% center; } }
+
+.hero-subtitle {
+  margin-top: 2rem; font-size: 1.25rem; color: var(--text-muted); max-width: 500px; line-height: 1.6;
+  opacity: 0; transform: translateY(20px); animation: fadeInUp 1s 0.8s forwards;
+}
+.hero i { font-family: var(--font-serif); font-weight: 400; font-style: italic; color: white; }
+
+/* --- MARQUEE (SKILLS) --- */
+.marquee-wrap {
+  width: 100%; padding: 3rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.01); overflow: hidden; position: relative;
+}
+.marquee { display: flex; gap: 4rem; animation: scroll 30s linear infinite; width: max-content; }
+.skill-txt {
+  font-size: 3.5rem; font-weight: 700; color: transparent; 
+  -webkit-text-stroke: 1px rgba(255,255,255,0.2); text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+.skill-txt:hover { color: white; -webkit-text-stroke: 1px white; opacity: 1; cursor: default;}
+@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* --- SECTIONS GENERAL --- */
+section { padding: 8rem 4rem; max-width: 1600px; margin: 0 auto; }
+.section-head { margin-bottom: 5rem; }
+.section-head h2 { font-size: 2.5rem; letter-spacing: -0.03em; margin-bottom: 1rem; }
+.section-head p { color: var(--text-muted); }
+
+/* --- PROJECTS (SPOTLIGHT) --- */
+.project-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); gap: 2rem;
+}
+.project-card {
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px;
+  padding: 3rem; position: relative; overflow: hidden; transition: transform 0.4s ease;
+}
+.project-card:hover { transform: translateY(-10px); }
+.project-card::after {
+  content: ""; position: absolute; top: var(--y); left: var(--x);
+  width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 50%);
+  transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.4s; pointer-events: none;
+}
+.project-card:hover::after { opacity: 1; }
+
+.p-tag {
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; 
+  border: 1px solid rgba(255,255,255,0.2); padding: 0.4rem 1rem; border-radius: 50px;
+  margin-right: 0.5rem; display: inline-block; margin-bottom: 1.5rem; color: #ccc;
+}
+.project-card h3 { font-size: 2rem; margin-bottom: 0.5rem; }
+.project-card p { color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; }
+.link-arrow { font-size: 1.5rem; transform: rotate(-45deg); display: inline-block; transition: transform 0.3s; }
+.project-card:hover .link-arrow { transform: rotate(0deg) translate(5px, 0); color: var(--accent); }
+
+/* --- EDUCATION TIMELINE --- */
+.timeline { position: relative; padding-left: 2rem; border-left: 1px solid var(--border); }
+.timeline-item {
+  position: relative; margin-bottom: 4rem; padding: 1rem 2rem; 
+  opacity: 0; transform: translateY(30px); transition: all 0.6s ease;
+  border-radius: 12px;
+}
+#project-anchor {
+  all: unset;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+.timeline-item.visible { opacity: 1; transform: translateY(0); }
+.timeline-dot {
+  position: absolute; left: -2.45rem; top: 1.5rem; width: 12px; height: 12px;
+  background: var(--bg); border: 2px solid var(--text-muted); border-radius: 50%;
+  transition: all 0.3s;
+}
+.time-year {
+  font-family: var(--font-serif); font-style: italic; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 0.5rem; display: block;
+}
+.timeline-item h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.timeline-item p { color: var(--text-muted); max-width: 600px; }
+
+/* --- WHATS NEXT (CONTACT) --- */
+.next-section {
+  min-height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center; border-top: 1px solid var(--border); position: relative;
+}
+.next-section h2 {
+  font-size: clamp(3rem, 10vw, 8rem); line-height: 1; letter-spacing: -0.04em;
+  margin-bottom: 2rem; transition: transform 0.5s;
+}
+.next-section h2 span { display: block; color: var(--text-muted); font-family: var(--font-serif); font-size: 0.5em; font-style: italic; margin-bottom: 1rem; }
+.cta-btn {
+  padding: 1.2rem 3rem; background: white; color: black !important; font-weight: 600; font-size: 1.1rem;
+  border-radius: 100px; text-decoration: none; position: relative; overflow: hidden;
+  transition: transform 0.3s ease; display: inline-block; mix-blend-mode: normal !important;
+}
+
+/* --- UTILS --- */
+.reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 1.5rem; } .nav-items { display: none; }
+  .hero, section { padding: 4rem 1.5rem; }
+  .project-grid { grid-template-columns: 1fr; }
+  .cursor, .cursor-dot { display: none; } * { cursor: auto; }
+}
+
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<div class="ambient-light light-1"></div>
+<div class="ambient-light light-2"></div>
+
+<nav>
+  <div class="logo">JHW.</div>
+  <div class="nav-items">
+    <a href="#projects" class="hover-trigger">Projects</a>
+    <a href="#education" class="hover-trigger">History  </a>
+    <a href="#contact" class="hover-trigger">Get in Touch</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <!--<h2 style="font-family: JetBrains Mono; font-weight: normal; color: #f3f3f3">console.log("Hello, world.");</h2>-->
+  <h1>
+    <span class="reveal-up">I'm building the</span><br>
+    <span class="reveal-up shimmer-text">future of digital</span><br>
+    <span class="reveal-up"><i>experiences.</i></span>
+  </h1>
+  <p class="hero-subtitle">
+    Hi, I’m Jack — a developer who focuses on creating clean, modern, and highly interactive experiences. I’m passionate about combining stunning design with smooth performance, building websites and apps that are not only visually impressive but also intuitive and user-friendly.
+  </p>
+<!--<div class="btn-container">
+  <a href="path-to-your-cv.pdf" download="YourName_CV" class="custom-btn hover-trigger magnetic">
+    <span class="btn-text">
+      Download CV</i>
+    </span>
+    <div class="btn-fill"></div>
+  </a>
+</div>-->
+</header>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="skill-txt">UI</span><span class="skill-txt">JavaScript</span><span class="skill-txt">CSS</span><span class="skill-txt">HTML</span><span class="skill-txt">PHP</span><span class="skill-txt">SQL</span><span class="skill-txt">Python</span><span class="skill-txt">User Experience</span><span class="skill-txt">Design</span><span class="skill-txt">Deployment</span>
+        <span class="skill-txt">UI</span><span class="skill-txt">JavaScript</span><span class="skill-txt">CSS</span><span class="skill-txt">HTML</span><span class="skill-txt">PHP</span><span class="skill-txt">SQL</span><span class="skill-txt">Python</span><span class="skill-txt">User Experience</span><span class="skill-txt">Design</span><span class="skill-txt">Deployment</span>
+  </div>
+</div>
+
+<section id="projects">
+  <div class="section-head reveal-up">
+    <h2>Projects</h2>
+    <p>A few of my projects, with way more to come soon.</p>
+  </div>
+  
+  <a id="project-anchor" href="/projects/climacast/index.html">
+  <div class="project-grid">
+    <div class="project-card reveal-up hover-trigger">
+      <span class="p-tag">Web Development</span>
+      <h3>ClimaCast</h3>
+      <p>ClimaCast: a stunning, simple weather application made to inform.</p>
+      <div class="link-arrow"><i class="fas fa-arrow-right"></i></div>
+    </div>
+  </a>
+</section>
+
+<section id="education">
+  <div class="section-head reveal-up">
+    <h2>Education & History</h2>
+    <p>The path that led me here.</p>
+  </div>
+
+  <div class="timeline">
+    <a id="project-anchor" href="history/stmarys/index.html">
+    <div class="timeline-item reveal-up hover-trigger">
+      <div class="timeline-dot"></div>
+      <span class="time-year">2016-2023</span>
+      <h3>St. Mary's C of E School</h3>
+      <p>Primary School - Start of Formal Education</p>
+      <p style="font-size: 0.9rem; margin-top: 0.5rem;">Click for more information.</p>
+    </div>
+    </a>
+
+    <a id="project-anchor" href="history/tms/index.html">
+    <div class="timeline-item reveal-up hover-trigger">
+      <div class="timeline-dot"></div>
+      <span class="time-year">2023-Present</span>
+      <h3>The Mandeville School</h3>
+      <p>Secondary School - GCSE Level</p>
+      <p style="font-size: 0.9rem; margin-top: 0.5rem;">Click for more information.</p>
+    </div>
+    </a>
+
+    
+
+  </div>
+
+</section>
+
+<section id="contact" class="next-section">
+  <div class="reveal-up">
+    <h2><span>What's next?</span>Let's create<br>something epic.</h2>
+    <div style="margin-top: 3rem;">
+      <a href="contact/index.html" class="cta-btn hover-trigger">Get in Touch</a>
+    </div>
+    <div style="margin-top: 4rem; display: flex; gap: 2rem; justify-content: center; font-size: 1.5rem;">
+      <a href="#" class="hover-trigger" style="color:white; padding: 10px;"><i class="fab fa-github"></i></a>
+    </div>
+  </div>
+</section>
+
+<script>
+const cursor = document.querySelector('.cursor');
+const cursorDot = document.querySelector('.cursor-dot');
+const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+let mouseX = 0, mouseY = 0;
+let cursorX = 0, cursorY = 0;
+let isHovering = false;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  cursorDot.style.left = mouseX + 'px';
+  cursorDot.style.top = mouseY + 'px';
+  
+  document.querySelectorAll('.project-card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--x', `${e.clientX - rect.left}px`);
+    card.style.setProperty('--y', `${e.clientY - rect.top}px`);
+  });
+});
+
+function animateCursor() {
+  const speed = 0.15;
+  
+  if (!isHovering) {
+    cursorX += (mouseX - cursorX) * speed;
+    cursorY += (mouseY - cursorY) * speed;
+    cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+  }
+  
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+hoverTriggers.forEach(trigger => {
+  trigger.addEventListener('mouseenter', () => {
+    isHovering = true;
+    const rect = trigger.getBoundingClientRect();
+    const padding = 8;
+    
+    cursor.style.width = `${rect.width + padding * 2}px`;
+    cursor.style.height = `${rect.height + padding * 2}px`;
+    
+    // Match the element's rounded corners exactly
+    const borderRadius = window.getComputedStyle(trigger).borderRadius;
+    cursor.style.borderRadius = borderRadius === '50%' ? '50%' : borderRadius;
+    
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    cursor.style.transform = `translate(${centerX}px, ${centerY}px) translate(-50%, -50%)`;
+    cursor.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+    cursor.style.borderColor = 'rgba(255, 255, 255, 1)';
+  });
+
+  trigger.addEventListener('mouseleave', () => {
+    isHovering = false;
+    cursor.style.width = 'var(--cursor-size)';
+    cursor.style.height = 'var(--cursor-size)';
+    cursor.style.borderRadius = '50%';
+    cursor.style.backgroundColor = 'transparent';
+    cursor.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
