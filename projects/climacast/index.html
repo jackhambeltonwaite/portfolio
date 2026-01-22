@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimaCast — Jack's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg: #030303;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --accent: #5e6aff;
+            --border: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --font-main: 'Manrope', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --cursor-size: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+
+        /* --- CURSOR --- */
+        .cursor { position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size); border: 1px solid rgba(255,255,255,0.8); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: width 0.4s, height 0.4s, border-radius 0.4s, background-color 0.4s; mix-blend-mode: difference; }
+        .cursor-dot { position: fixed; top: 0; left: 0; width: 6px; height: 6px; background: white; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
+
+        /* --- ARTICLE HEADER --- */
+        .article-hero { height: 90vh; padding: 0 4rem; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); }
+        .project-category { font-family: var(--font-mono); color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.5rem; display: block; }
+        .article-hero h1 { font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; letter-spacing: -0.04em; margin-bottom: 2rem; }
+        
+        .project-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 800px; margin-top: 3rem; }
+        .meta-item span { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+        .meta-item p { font-weight: 500; font-size: 1.1rem; }
+
+        /* --- CONTENT SECTIONS --- */
+        .content-section { padding: 8rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .content-section h2 { font-size: 2.5rem; margin-bottom: 2rem; font-weight: 700; }
+        .content-section p { font-size: 1.25rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 2rem; }
+        
+        /* IMAGE PLACEHOLDER style */
+        .image-container { width: 100%; aspect-ratio: 16 / 9; background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; margin: 4rem 0; overflow: hidden; position: relative; }
+        .image-container::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-mono); opacity: 0.2; letter-spacing: 0.5em; }
+
+        /* TECH STACK LIST */
+        .tech-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+        .tech-tag { padding: 0.5rem 1.2rem; border: 1px solid var(--border); border-radius: 50px; font-family: var(--font-mono); font-size: 0.8rem; }
+
+        /* --- FOOTER NAV --- */
+        .project-nav { display: flex; justify-content: space-between; padding: 4rem; border-top: 1px solid var(--border); }
+        .nav-btn { text-decoration: none; color: var(--text); font-weight: 800; font-size: 1.5rem; transition: color 0.3s; }
+        .nav-btn:hover { color: var(--accent); }
+
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .article-hero, .content-section { padding: 4rem 1.5rem; }
+            .project-meta { grid-template-columns: 1fr; }
+            .cursor, .cursor-dot { display: none; } * { cursor: auto; }
+        }
+        /* Add this to your existing CSS */
+.image-container { 
+    width: 100%; 
+    /* Remove aspect-ratio to let the image define the height */
+    background: var(--card-bg); 
+    border: 1px solid var(--border); 
+    border-radius: 24px; 
+    margin: 4rem 0; 
+    overflow: hidden; 
+    position: relative;
+}
+
+.image-container img {
+    width: 100%; 
+    height: auto; /* Ensures the full height is shown */
+    display: block;
+    object-fit: contain; /* Shows the entire image */
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-container:hover img {
+    transform: scale(1.02);
+}
+    </style>
+</head>
+<body>
+
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
+<nav style="position: absolute;">
+    <div class="btn-container" style="padding: 2rem 4rem;">
+        <a href="/index.html" class="hover-trigger" style="text-decoration: none; color: white; font-family: var(--font-mono); font-size: 0.9rem;">
+            <i class="fas fa-arrow-left"></i> BACK HOME
+        </a>
+    </div>
+</nav>
+
+<header class="article-hero">
+    <span style="font-weight:bold;" class="project-category reveal-up">Project</span>
+    <h1 class="reveal-up">ClimaCast</h1>
+    
+    <div class="project-meta reveal-up">
+        <div class="meta-item">
+            <span>Current Version</span>
+            <p>v5.1</p>
+        </div>
+        <div class="meta-item">
+            <span>URL</span>
+            <p><a style="color: white;" href="https://climacast.uk">climacast.uk</a></p>
+        </div>
+        <div class="meta-item">
+            <span>Genre</span>
+            <p>Web Development/Design</p>
+        </div>
+        
+    </div>
+            <div class="tech-list">
+            <div class="tech-tag">JavaScript</div>
+            <div class="tech-tag">HTML 5</div>
+            <div class="tech-tag">CSS</div>
+            <div class="tech-tag">UI/UX</div>
+            <div class="tech-tag">iFastNet Hosting</div>
+            <div class="tech-tag">PHP & SQL Backend</div>
+            <div class="tech-tag">API Integration</div>
+            <div class="tech-tag">AI</div>
+        </div>
+</header>
+
+
+<section class="content-section">
+    <div class="reveal-up">
+        <h2>The Challenge</h2>
+        <p>The objective was to take complex, hard-to-understand weather data and turn it into a web-app that's stunningly simple in design. I thought this was a worthy challenge, and spent the last 2 years trying to make it perfect.</p>
+    </div>
+
+    <div class="image-container reveal-up"><img src="homepage.png"></div>
+
+    <div class="reveal-up">
+        <h2>Development Process & Solution</h2>
+        <p>In April of 2024, the first version of ClimaCast was born, basic in functionality but still presented in a way that looked good and was easy to understand. On December 1 2025, ClimaCast 5.0 was released, adding rule-based AI intergration (developed by myself) and fetching from weather API's. Although perfection was the goal, no project will ever be perfect; there's always more things to build, add and achieve.</p>
+    </div>
+</section>
+
+<script>
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+    });
+
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.15;
+        cursorY += (mouseY - cursorY) * 0.15;
+        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    hoverTriggers.forEach(trigger => {
+        trigger.addEventListener('mouseenter', () => {
+            cursor.style.width = '60px'; cursor.style.height = '60px';
+            cursor.style.backgroundColor = 'rgba(255,255,255,0.1)';
+        });
+        trigger.addEventListener('mouseleave', () => {
+            cursor.style.width = '20px'; cursor.style.height = '20px';
+            cursor.style.backgroundColor = 'transparent';
+        });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
